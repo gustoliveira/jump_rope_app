@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'StopwatchPage.dart';
 
-class DefineTimesPage extends StatefulWidget {
+class DefineTimePage extends StatefulWidget {
   final Color color;
 
-  DefineTimesPage({this.color});
+  DefineTimePage({this.color});
 
   @override
-  DefineTimesPageState createState() => DefineTimesPageState();
+  DefineTimePageState createState() => DefineTimePageState();
 }
 
-class DefineTimesPageState extends State<DefineTimesPage> {
+class DefineTimePageState extends State<DefineTimePage> {
   TextEditingController controladorAtivo = TextEditingController();
   TextEditingController controladorDescanso = TextEditingController();
   TextEditingController controladorQntdSeries = TextEditingController();
