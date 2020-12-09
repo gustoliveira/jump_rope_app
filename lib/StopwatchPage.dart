@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wakelock/wakelock.dart';
+
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class StopwatchPage extends StatefulWidget {
@@ -33,6 +35,8 @@ class _StopwatchPageState extends State<StopwatchPage> {
     _stopWatchTimer.secondTime.listen((value) {
       if (value >= (_flagMudarAtivoDescanso ? _ativo : _descanso) + 1) {
         setState(() {
+          Wakelock.enable();
+
           _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
           _color = (_flagMudarAtivoDescanso ? Colors.blue : Colors.red);
           _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
@@ -47,11 +51,9 @@ class _StopwatchPageState extends State<StopwatchPage> {
 
           if (_flagMudarFases) {
             int lenght = widget.vetorAtivo.length;
-            print("aaaaaaaaaaaaaaaaaaaa $_serieAtual");
-            print("aaaaaaaaaaaaaaaaaaaa $lenght");
-
             if (_serieAtual == lenght - 1) {
               _isOver = true;
+              Wakelock.disable();
               _color = Colors.green;
               _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
             } else {
@@ -152,7 +154,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                             color: Colors.green,
                             shape: const StadiumBorder(),
                             child: Text(
-                              _isPaused ? "Voltar" : "Começar",
+                              _isPaused ? "Retomar" : "Começar",
                               style: TextStyle(color: Colors.white),
                             ),
                             onPressed: () async {
@@ -173,7 +175,6 @@ class _StopwatchPageState extends State<StopwatchPage> {
                                   _countSeries += widget.vetorAtivo[i]
                                       ["controladorQntdRepeticao"];
                                 }
-
                                 setState(() {
                                   _isPaused = false;
                                 });
@@ -225,6 +226,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                                     .add(StopWatchExecute.stop);
                                 setState(() {
                                   _isPaused = true;
+                                  // Wakelock.disable();
                                 });
                               } else {
                                 return null;

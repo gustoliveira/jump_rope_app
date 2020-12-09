@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   stop_watch_timer: any
+  wakelock: ^0.2.1+1
   flutter:
     sdk: flutter
 
