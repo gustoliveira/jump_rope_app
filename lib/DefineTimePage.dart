@@ -194,6 +194,8 @@ class DefineTimePageState extends State<DefineTimePage> {
                                       controladorDescanso.text = "";
                                       controladorAtivo.text = "";
                                       controladorQntdRepeticao.text = "";
+                                      listaTempos.clear();
+                                      flagStart = true;
                                     });
                                   },
                                 ),
