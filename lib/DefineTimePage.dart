@@ -220,13 +220,20 @@ class DefineTimePageState extends State<DefineTimePage> {
                                               controladorAtivo.text = "";
                                               controladorQntdRepeticao.text =
                                                   "";
-
+                                              int _countSeries = 0;
+                                              for (int i = 0;
+                                                  i < listaTempos.length;
+                                                  i++) {
+                                                _countSeries += listaTempos[i][
+                                                    "controladorQntdRepeticao"];
+                                              }
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       StopwatchPage(
                                                     vetorAtivo: listaTempos,
+                                                    countSeries: _countSeries,
                                                   ),
                                                 ),
                                               );
@@ -244,7 +251,8 @@ class DefineTimePageState extends State<DefineTimePage> {
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      if (controladorQntdSeries.text != "") {
+                                      if (controladorQntdSeries.text != "" &&
+                                          controladorQntdSeries.text != "0") {
                                         qntdConfiguracoes = int.parse(
                                             controladorQntdSeries.text);
                                         flagTempos = false;
@@ -252,7 +260,11 @@ class DefineTimePageState extends State<DefineTimePage> {
 
                                       if (controladorDescanso.text != "" &&
                                           controladorAtivo.text != "" &&
-                                          controladorQntdRepeticao.text != "") {
+                                          controladorQntdRepeticao.text != "" &&
+                                          controladorDescanso.text != "0" &&
+                                          controladorAtivo.text != "0" &&
+                                          controladorQntdRepeticao.text !=
+                                              "0") {
                                         addSerie();
 
                                         if (qntdConfiguracoes ==

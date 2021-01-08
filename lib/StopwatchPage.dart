@@ -4,9 +4,10 @@ import 'package:wakelock/wakelock.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class StopwatchPage extends StatefulWidget {
-  List<Map<String, dynamic>> vetorAtivo;
+  final List<Map<String, dynamic>> vetorAtivo;
+  final int countSeries;
 
-  StopwatchPage({this.vetorAtivo});
+  StopwatchPage({this.vetorAtivo, this.countSeries});
 
   @override
   _StopwatchPageState createState() => _StopwatchPageState();
@@ -17,7 +18,6 @@ class _StopwatchPageState extends State<StopwatchPage> {
   int _descanso = 0;
   int _count = 0;
   int _serieAtual = 0;
-  int _countSeries = 0;
   int _countQntd = 0;
 
   bool _flagMudarFases = false;
@@ -109,7 +109,7 @@ class _StopwatchPageState extends State<StopwatchPage> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                         child: Text(
-                          "$_countQntd/$_countSeries",
+                          "$_countQntd/${widget.countSeries}",
                           style: TextStyle(
                             fontSize: 30,
                             color: Colors.black,
@@ -159,25 +159,25 @@ class _StopwatchPageState extends State<StopwatchPage> {
                             ),
                             onPressed: () async {
                               if (!_isOver) {
-                                _stopWatchTimer.onExecute
-                                    .add(StopWatchExecute.start);
-                                _ativo = widget.vetorAtivo[_serieAtual]
-                                    ["tempoAtivo"];
-                                _descanso = widget.vetorAtivo[_serieAtual]
-                                    ["tempoDescanso"];
-                                _count = widget.vetorAtivo[_serieAtual]
-                                        ["controladorQntdRepeticao"] *
-                                    2;
+                                if (_isPaused == false) {
+                                  _stopWatchTimer.onExecute
+                                      .add(StopWatchExecute.start);
+                                  _ativo = widget.vetorAtivo[_serieAtual]
+                                      ["tempoAtivo"];
+                                  _descanso = widget.vetorAtivo[_serieAtual]
+                                      ["tempoDescanso"];
+                                  _count = widget.vetorAtivo[_serieAtual]
+                                          ["controladorQntdRepeticao"] *
+                                      2;
 
-                                for (int i = 0;
-                                    i < widget.vetorAtivo.length;
-                                    i++) {
-                                  _countSeries += widget.vetorAtivo[i]
-                                      ["controladorQntdRepeticao"];
+                                  setState(() {
+                                    _isPaused = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    _isPaused = false;
+                                  });
                                 }
-                                setState(() {
-                                  _isPaused = false;
-                                });
                               } else {
                                 return null;
                               }
@@ -226,7 +226,6 @@ class _StopwatchPageState extends State<StopwatchPage> {
                                     .add(StopWatchExecute.stop);
                                 setState(() {
                                   _isPaused = true;
-                                  // Wakelock.disable();
                                 });
                               } else {
                                 return null;
